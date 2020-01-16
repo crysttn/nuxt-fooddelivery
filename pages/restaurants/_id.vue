@@ -11,7 +11,7 @@
         <div class="col-lg-8">
           <div class="card-deck">
             <div class="card" v-for="dish in restaurant.dishes" v-bind:key="dish">
-              <img class="card-img-top" :src="'http://localhost:1337/' + dish.image[0].url" alt />
+              <img class="card-img-top" :src="'https://hidden-springs-04285.herokuapp.com/' + dish.image[0].url" alt />
               <div class="card-body">
                 <h5 class="card-title">
                   {{ dish.name }}

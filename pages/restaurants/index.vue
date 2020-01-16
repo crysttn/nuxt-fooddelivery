@@ -17,7 +17,7 @@
           v-for="restaurant in filteredList"
           v-bind:key="restaurant"
         >
-          <img class="card-img-top" :src="'http://localhost:1337/' + restaurant.image[0].url" alt />
+          <img class="card-img-top" :src="'https://hidden-springs-04285.herokuapp.com/' + restaurant.image[0].url" alt />
           <div class="card-body">
             <h5 class="card-title">{{ restaurant.name }}</h5>
             <p class="card-text">{{ restaurant.description }}</p>
