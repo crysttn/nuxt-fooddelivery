@@ -10,7 +10,6 @@
           placeholder="Start typing to search for a restaurant..."
           aria-label="Search"
         />
-        <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
       </form>
       <div class="card-deck">
         <div

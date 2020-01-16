@@ -40,7 +40,7 @@
             <button
               class="btn btn-lg btn-success btn-block"
               v-if="$route.path !== '/orders/checkout'"
-              @click="goToCheckout"
+              @click="handleSubmit"
               name="button"
             >Submit order (€ {{ price }})</button>
           </form>
