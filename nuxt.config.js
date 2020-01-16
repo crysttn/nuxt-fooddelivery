@@ -48,8 +48,7 @@ export default {
   apollo: {
     clientConfigs: {
       default: {
-        httpEndpoint: 'https://hidden-springs-04285.herokuapp.com/graphql',
-        browserHttpEndpoint: '/graphql'
+        httpEndpoint: 'https://hidden-springs-04285.herokuapp.com/graphql'
       }
     }
   },
