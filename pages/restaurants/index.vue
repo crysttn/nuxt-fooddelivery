@@ -30,7 +30,7 @@
         </div>
       </div>
 
-      <div class="text-center" v-if="filteredList.length == 0">
+      <div class="text-center" v-show="filteredList.length == 0">
         <img
           src="https://assets-ouch.icons8.com/preview/19/52de2377-696e-4194-8c63-0a81aef60b4f.png"
           height="384"
