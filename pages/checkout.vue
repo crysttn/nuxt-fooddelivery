@@ -24,7 +24,7 @@
                 <table class="table table-striped">
                   <thead>
                     <tr>
-                      <th scope="col">Dish name</th>
+                      <th scope="col">Product</th>
                       <th scope="col">Price</th>
                       <th scope="col">Quantity</th>
                       <th scope="col" />
