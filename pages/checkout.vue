@@ -5,27 +5,10 @@
         <a class="btn btn-light mb-2" @click="$router.go(-1)">
           &lsaquo; Go back
         </a>
-        Dishes
+        Checkout
       </h1>
       <div class="row">
-        <div class="col-md-8">
-          <div class="card-columns">
-            <div v-for="dish in dishes" :key="dish.id" class="card">
-              <img :src="dish.image.url" class="card-img-top" />
-              <div class="card-body">
-                <h5 class="card-title">{{ dish.name }}</h5>
-                <p class="card-text">
-                  {{ dish.description || 'No description provided.' }}
-                </p>
-                <p class="card-text">€ {{ dish.price }}</p>
-                <button class="btn btn-primary" @click="addToCart(dish)">
-                  Add to cart
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
+        <div class="col-md-6 offset-md-3 mt-3">
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">
@@ -78,16 +61,62 @@
                   </tbody>
                 </table>
               </div>
-              <h5 class="card-text mb-4">Cart total: € {{ price }}</h5>
-              <button
-                :disabled="!selectedDishes.length"
-                class="btn btn-lg btn-block btn-success"
-                @click="goToCheckout"
-              >
-                Place order
-              </button>
+              <h5 class="card-text mt-4">Cart total: ${{ price }}</h5>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 offset-md-3 mt-3">
+          <form autocomplete="off" @submit.stop.prevent="handleSubmit">
+            <div class="form-group">
+              <label for="address">Address</label>
+              <b-form-input
+                id="address"
+                v-model="address"
+                type="text"
+                autofocus="true"
+                placeholder="Enter your address"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="postalCode">Postal Code</label>
+              <b-form-input
+                id="postalCode"
+                v-model="postalCode"
+                type="text"
+                autofocus="true"
+                placeholder="Enter your postal code"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="city">City</label>
+              <b-form-input
+                id="city"
+                v-model="city"
+                type="text"
+                autofocus="true"
+                placeholder="Enter your city"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="card">Card</label>
+              <card
+                class="form-control"
+                stripe="pk_test_eYNlUeG6mKkKSVB2QuwYsUxC00NoNh9xXo"
+              />
+            </div>
+            <button
+              :disabled="loading"
+              type="submit"
+              class="btn btn-lg btn-success btn-block mt-4"
+            >
+              Pay
+            </button>
+          </form>
         </div>
       </div>
     </div>
@@ -95,14 +124,21 @@
 </template>
 
 <script>
+import { Card, createToken } from 'vue-stripe-elements-plus'
+import { mapMutations } from 'vuex'
 import Strapi from 'strapi-sdk-javascript/build/main'
 const apiUrl = process.env.API_URL || 'http://localhost:1337/'
 const strapi = new Strapi(apiUrl)
-import { mapMutations } from 'vuex'
 export default {
+  components: {
+    Card
+  },
   data() {
     return {
-      complete: false
+      address: '',
+      postalCode: '',
+      city: '',
+      loading: false
     }
   },
   computed: {
@@ -122,51 +158,40 @@ export default {
       return this.$store.getters['cart/numberOfItems']
     }
   },
-  async fetch({ store, params }) {
-    store.commit('dishes/emptyList')
-    const response = await strapi.request('post', '/graphql', {
-      data: {
-        query: `query {
-            restaurant(id: "${params.id}") {
-              id
-              name
-              dishes {
-                id
-                name
-                description
-                price
-                image {
-                  url
-                }
-              }
-            }
-          }
-          `
-      }
-    })
-    response.data.restaurant.dishes.forEach(dish => {
-      dish.image.url = `${apiUrl}${dish.image.url}`
-      store.commit('dishes/add', {
-        id: dish.id,
-        ...dish
-      })
-    })
-  },
   methods: {
+    async handleSubmit() {
+      this.loading = true
+      let token
+      try {
+        const response = await createToken()
+        token = response.token.id
+      } catch (err) {
+        alert('An error occurred.')
+        this.loading = false
+        return
+      }
+      try {
+        await strapi.createEntry('orders', {
+          amount: this.$store.getters['cart/price'],
+          dishes: this.$store.getters['cart/items'],
+          address: this.address,
+          postalCode: this.postalCode,
+          city: this.city,
+          token
+        })
+        alert('Your order have been successfully submitted.')
+        this.emptyCart()
+        this.$router.push('/')
+      } catch (err) {
+        this.loading = false
+        alert('An error occurred.')
+      }
+    },
     ...mapMutations({
       addToCart: 'cart/add',
       removeFromCart: 'cart/remove',
       emptyCart: 'cart/emptyList'
-    }),
-    goToCheckout() {
-      // Redirect to signin page if not logged in.
-      const isConnected = this.$store.getters['auth/username']
-      if (!isConnected) {
-        this.$router.push('/signin')
-        return
-      }
-      this.$router.push('/checkout')
-    }
+    })
   }
 }
 </script>

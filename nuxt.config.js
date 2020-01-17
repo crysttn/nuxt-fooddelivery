@@ -1,65 +1,47 @@
-
-export default {
-  mode: 'universal',
+module.exports = {
   /*
-  ** Headers of the page
-  */
+   ** Headers of the page
+   */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'client',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
+      { hid: 'description', name: 'description', content: 'Nuxt.js project' }
     ],
-    link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ],
-    script: [
-      { src: 'https://js.stripe.com/v3' }
-    ]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    script: [{ src: 'https://js.stripe.com/v3' }]
   },
+
   /*
-  ** Customize the progress-bar color
-  */
-  loading: { color: '#fff' },
+   ** Expose env variables
+   */
+  env: {
+    API_URL: process.env.API_URL
+  },
+
   /*
-  ** Global CSS
-  */
-  css: [
-  ],
+   ** Customize the progress bar color
+   */
+  loading: { color: '#3B8070' },
+
   /*
-  ** Plugins to load before mounting the App
-  */
-  plugins: [
-  ],
-  /*
-  ** Nuxt.js dev-modules
-  */
-  buildModules: [
-  ],
-  /*
-  ** Nuxt.js modules
-  */
-  modules: [
-    // Doc: https://bootstrap-vue.js.org
-    'bootstrap-vue/nuxt',
-    '@nuxtjs/apollo'
-  ],
-  apollo: {
-    clientConfigs: {
-      default: {
-        httpEndpoint: 'https://hidden-springs-04285.herokuapp.com/graphql'
+   ** Build configuration
+   */
+  build: {
+    /*
+     ** Run ESLint on save
+     */
+    extend(config, { isDev, isClient }) {
+      if (isDev && isClient) {
+        config.module.rules.push({
+          enforce: 'pre',
+          test: /\.(js|vue)$/,
+          loader: 'eslint-loader',
+          exclude: /(node_modules)/
+        })
       }
     }
   },
-  /*
-  ** Build configuration
-  */
-  build: {
-    /*
-    ** You can extend webpack config here
-    */
-    extend(config, ctx) {
-    }
-  }
+  modules: ['bootstrap-vue/nuxt']
 }
