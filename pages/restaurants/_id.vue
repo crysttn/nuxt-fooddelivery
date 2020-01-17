@@ -5,7 +5,6 @@
         <a class="btn btn-light mb-2" @click="$router.go(-1)">
           &lsaquo; Go back
         </a>
-        Dishes
       </h1>
       <div class="row">
         <div class="col-md-8">

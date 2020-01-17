@@ -25,7 +25,7 @@
             <div class="card-body">
               <h5 class="card-title">{{ restaurant.name }}</h5>
               <p class="card-text">
-                {{ restaurant.description || 'No description provided' }}.
+                {{ restaurant.description || 'No description provided.' }}
               </p>
               <router-link
                 :to="{ name: 'restaurants-id', params: { id: restaurant.id } }"
