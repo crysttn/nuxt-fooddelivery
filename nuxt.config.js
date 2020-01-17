@@ -43,5 +43,11 @@ module.exports = {
       }
     }
   },
-  modules: ['bootstrap-vue/nuxt', '@nuxtjs/pwa']
+  modules: ['bootstrap-vue/nuxt', '@nuxtjs/pwa'],
+  manifest: {
+    name: 'Food delivery PWA built using Nuxt.js',
+    short_name: 'Restos',
+    lang: 'en',
+    display: 'standalone'
+  }
 }
