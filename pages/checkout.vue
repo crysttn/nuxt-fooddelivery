@@ -1,5 +1,5 @@
 <template>
-  <section class="container">
+  <section class="container py-5">
     <div>
       <h1 class="my-4">
         <a class="btn btn-light mb-2" @click="$router.go(-1)">

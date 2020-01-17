@@ -1,6 +1,9 @@
 <template>
-  <nav class="navbar navbar-expand navbar-dark bg-dark">
-    <div class="container">
+  <nav
+    class="navbar navbar-expand navbar-light fixed-top"
+    style="background-color: #F6C330;"
+  >
+    <div class="container px-md-3">
       <router-link tag="a" class="navbar-brand" to="/" exact>
         Restos
       </router-link>

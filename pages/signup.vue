@@ -1,5 +1,5 @@
 <template>
-  <section class="container">
+  <section class="container py-5">
     <div class="col-md-6 offset-md-3 mt-3">
       <form autocomplete="off" @submit.stop.prevent="handleSubmit">
         <h1 class="my-4">Sign up</h1>
